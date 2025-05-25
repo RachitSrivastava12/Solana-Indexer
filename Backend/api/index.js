@@ -18,9 +18,11 @@ app.use(bodyParser.json());
 
 // Database connection
 const pool = new pg.Pool({
-  connectionString: 'postgresql://solana_indexer_user:WqFMMHRnbjHQBu8lp8manjvqWM8er86J@dpg-d0pkr6umcj7s73e93i40-a.singapore-postgres.render.com/solana_indexer'
+  connectionString: 'postgresql://solana_indexer_user:WqFMMHRnbjHQBu8lp8manjvqWM8er86J@dpg-d0pkr6umcj7s73e93i40-a.singapore-postgres.render.com/solana_indexer',
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
-
 // Initialize Solana connection
 let solanaConnection = null;
 let network = 'mainnet'; // Default to mainnet, will be updated based on RPC URL
