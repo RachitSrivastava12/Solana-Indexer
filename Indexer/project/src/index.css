@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+@layer utilities {
+  .text-neon-yellow {
+    color: #ffff33;
+  }
+
+  .border-neon-yellow {
+    border-color: #ffff33;
+  }
+
+  .shadow-neon-yellow-sm {
+    box-shadow: 0 0 4px #ffff33;
+  }
+
+  .shadow-neon-yellow-md {
+    box-shadow: 0 0 8px #ffff33;
+  }
+
+  .bg-black {
+    background-color: #000000;
+  }
+
+  .border-dark-800 {
+    border-color: #222;
+  }
+}
+
+@layer components {
+  .neon-border {
+    @apply border border-neon-yellow shadow-neon-yellow-md;
+  }
+
+  .neon-text {
+    @apply text-neon-yellow drop-shadow-[0_0_3px_rgba(255,255,51,0.5)];
+  }
+
+  .neon-button {
+    @apply bg-transparent border border-neon-yellow text-neon-yellow shadow-neon-yellow-sm hover:shadow-neon-yellow-md transition-shadow duration-300;
+  }
+
+  .neon-card {
+    @apply bg-black border border-dark-800 shadow-lg hover:border-neon-yellow hover:shadow-neon-yellow-sm transition-all duration-300;
+  }
+}
+
+/* Global styles */
+body {
+  background-color: #000000; /* pure black background */
+  color: #f3f4f6; /* light text */
+}
