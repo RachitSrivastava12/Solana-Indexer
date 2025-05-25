@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 
 // Database connection
 const pool = new pg.Pool({
-  connectionString:  'postgresql://rust:rust@localhost:5432/solindexer'
+  connectionString: 'postgresql://postgres:Rachit@2209@db.lxdmbtjxpdglakfoxmde.supabase.co:5432/postgres'
 });
 
 // Initialize Solana connection
