@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 
 // Database connection
 const pool = new pg.Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://rust:rust@localhost:5432/solindexer'
+  connectionString:  'postgresql://rust:rust@localhost:5432/solindexer'
 });
 
 // Initialize Solana connection
@@ -26,8 +26,8 @@ let solanaConnection = null;
 let network = 'mainnet'; // Default to mainnet, will be updated based on RPC URL
 
 // Helius RPC URLs
-const RPC_URL = process.env.SOLANA_RPC_URL || 'https://mainnet.helius-rpc.com/?api-key=010cd958-a025-4a1a-aa7e-cc27d509f643';
-const WS_URL = process.env.SOLANA_WS_URL || 'wss://mainnet.helius-rpc.com/?api-key=010cd958-a025-4a1a-aa7e-cc27d509f643';
+const RPC_URL =  'https://mainnet.helius-rpc.com/?api-key=010cd958-a025-4a1a-aa7e-cc27d509f643';
+const WS_URL =  'wss://mainnet.helius-rpc.com/?api-key=010cd958-a025-4a1a-aa7e-cc27d509f643';
 
 // Explicitly define Buffer
 const Buffer = require('buffer').Buffer;
@@ -1365,3 +1365,5 @@ setInterval(async () => {
 app.listen(PORT, () => {
   console.log(`Solana Indexer backend running on port ${PORT}`);
 });
+
+module.exports = app;
