@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 
 // Database connection
 const pool = new pg.Pool({
-  connectionString: 'postgresql://postgres:Rachit@2209@db.lxdmbtjxpdglakfoxmde.supabase.co:5432/postgres'
+  connectionString: 'postgresql://solana_indexer_user:WqFMMHRnbjHQBu8lp8manjvqWM8er86J@dpg-d0pkr6umcj7s73e93i40-a.singapore-postgres.render.com/solana_indexer'
 });
 
 // Initialize Solana connection
