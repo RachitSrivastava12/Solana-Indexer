@@ -143,7 +143,7 @@ const DataTypeSelection: React.FC<DataTypeSelectionProps> = ({ onComplete }) => 
               className="flex items-center text-sm text-yellow-600 dark:text-yellow-400 hover:text-yellow-700 dark:hover:text-yellow-300"
             >
               <PlusCircle className="w-4 h-4 mr-1" />
-              Add Query
+              This option will allow you to enter queries to index specific Solana data!
             </button>
           </div>
           
@@ -151,7 +151,7 @@ const DataTypeSelection: React.FC<DataTypeSelectionProps> = ({ onComplete }) => 
             <div className="flex items-center justify-center p-4 bg-gray-100 dark:bg-gray-700 rounded-md">
               <Info className="w-5 h-5 text-gray-500 dark:text-gray-400 mr-2" />
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                Add custom queries to index specific Solana data
+               Coming Soon!
               </p>
             </div>
           ) : (

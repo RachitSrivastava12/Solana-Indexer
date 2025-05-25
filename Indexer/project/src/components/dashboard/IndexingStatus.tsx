@@ -41,7 +41,7 @@ const IndexingStatus: React.FC<IndexingStatusProps> = () => {
       setError(null);
       try {
         const response = await axios.get<IndexingStatusResponse>(
-          'http://localhost:5000/api/indexing-status'
+          'https://solana-indexer-3ttcyyfq6-rachit-srivastavas-projects-ee6e9b50.vercel.app/api/indexing-status'
         );
 
         if (response.data.success !== false) {
