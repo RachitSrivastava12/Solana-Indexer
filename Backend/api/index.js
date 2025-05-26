@@ -5,8 +5,6 @@ const cors = require('cors');
 const pg = require('pg');
 const bodyParser = require('body-parser');
 const fetch = require('node-fetch');
-const RateLimit = require('async-ratelimiter');
-const Redis = require('ioredis');
 const { PublicKey, Connection } = require('@solana/web3.js');
 
 const app = express();
@@ -23,37 +21,42 @@ const pool = new pg.Pool({
     rejectUnauthorized: false,
   },
 });
+
 // Initialize Solana connection
 let solanaConnection = null;
 let network = 'mainnet'; // Default to mainnet, will be updated based on RPC URL
 
 // Helius RPC URLs
-const RPC_URL =  'https://mainnet.helius-rpc.com/?api-key=010cd958-a025-4a1a-aa7e-cc27d509f643';
-const WS_URL =  'wss://mainnet.helius-rpc.com/?api-key=010cd958-a025-4a1a-aa7e-cc27d509f643';
+const RPC_URL = 'https://mainnet.helius-rpc.com/?api-key=010cd958-a025-4a1a-aa7e-cc27d509f643';
+const WS_URL = 'wss://mainnet.helius-rpc.com/?api-key=010cd958-a025-4a1a-aa7e-cc27d509f643';
 
 // Explicitly define Buffer
 const Buffer = require('buffer').Buffer;
 
-// Rate limiter setup (10 req/sec for Helius free tier)
-const rateLimiter = new RateLimit({
-  db: new Redis('redis://default:ATOsAAIjcDE1Yjk0MDI3OGEzN2U0OTQ3OWNjZjY0MjUwYzJhMGU0MHAxMA@awaited-goshawk-13228.upstash.io:6379'),
-  max: 10,
-  duration: 1000
-});
-
-// Debug Redis connection
-rateLimiter.db.on('error', (err) => console.error('Redis error:', err));
-rateLimiter.db.on('connect', () => console.log('Connected to Redis for rate limiting'));
+// In-memory rate limiting (10 req/sec for Helius free tier)
+let requestTimestamps = []; // Track timestamps of requests
 
 // Retry logic for RPC calls
 async function withRetry(fn, maxRetries = 3, delayMs = 2000) {
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
+      // Check in-memory rate limit
+      const now = Date.now();
+      requestTimestamps = requestTimestamps.filter(ts => now - ts < 1000); // Last 1 second
+      if (requestTimestamps.length >= 10) {
+        console.warn(`In-memory rate limit exceeded: ${requestTimestamps.length} requests in the last second`);
+        throw new Error('Rate limit exceeded');
+      }
+      requestTimestamps.push(now);
+
       return await fn();
     } catch (error) {
       const isRetryable = error.message.includes('rate limit') || error.message.includes('429') || (error.cause && error.cause.code === 'ETIMEDOUT');
       if (attempt === maxRetries || !isRetryable) {
         console.error(`Retry failed after ${maxRetries} attempts:`, error.message);
+        if (error.message.includes('429')) {
+          console.error('Helius RPC rate limit exceeded (429 error).');
+        }
         throw error;
       }
       console.warn(`Retry ${attempt}/${maxRetries} after error: ${error.message}`);
@@ -1046,12 +1049,6 @@ async function startIndexer(dataTypes) {
           let recordsProcessed = 0;
 
           if (dataTypes.nftBids || dataTypes.nftPrices) {
-            const limit = await rateLimiter.get({ id: 'magic_eden_polling' });
-            if (!limit.remaining) {
-              console.warn('Rate limit exceeded for Magic Eden polling, skipping...');
-              return;
-            }
-
             const signatures = await withRetry(() =>
               solanaConnection.getSignaturesForAddress(programIds.nftBids, {
                 limit: 25,
@@ -1127,12 +1124,6 @@ async function startIndexer(dataTypes) {
           }
 
           if (dataTypes.tokensToBorrow) {
-            const limit = await rateLimiter.get({ id: 'solend_polling' });
-            if (!limit.remaining) {
-              console.warn('Rate limit exceeded for Solend polling, skipping...');
-              return;
-            }
-
             const signatures = await withRetry(() =>
               solanaConnection.getSignaturesForAddress(programIds.tokensToBorrow, {
                 limit: 25,
@@ -1212,7 +1203,7 @@ async function startIndexer(dataTypes) {
           console.error('Mainnet polling error:', error.message);
           if (client) client.release();
         }
-      }, 20000); // Poll every 20 seconds
+      }, 30000); // Increased from 20 seconds to 30 seconds to reduce request frequency
     }
 
     if (dataTypes.tokenPrices) {
@@ -1316,13 +1307,14 @@ function stopAllIndexers() {
   }
 
   processedSignatures.clear();
+  requestTimestamps = []; // Reset in-memory rate limiter
 }
 
 // Debug endpoint: Fetch recent signatures
 app.get('/api/recent-signatures', async (req, res) => {
   try {
     const programId = new PublicKey('M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K');
-    const signatures = await solanaConnection.getSignaturesForAddress(programId, { limit: 5 });
+    const signatures = await withRetry(() => solanaConnection.getSignaturesForAddress(programId, { limit: 5 }));
     res.json({ success: true, signatures: signatures.map(s => s.signature) });
   } catch (error) {
     console.error('Error fetching recent signatures:', error.message);
@@ -1334,10 +1326,12 @@ app.get('/api/recent-signatures', async (req, res) => {
 app.get('/api/test-transaction/:signature', async (req, res) => {
   try {
     const { signature } = req.params;
-    const tx = await solanaConnection.getParsedTransaction(signature, {
-      maxSupportedTransactionVersion: 0,
-      commitment: 'confirmed'
-    });
+    const tx = await withRetry(() =>
+      solanaConnection.getParsedTransaction(signature, {
+        maxSupportedTransactionVersion: 0,
+        commitment: 'confirmed'
+      })
+    );
     const bidDetails = await extractNftBidDetails(tx);
     const saleDetails = await extractNftSaleDetails(tx);
     const tokensToBorrowDetails = await extractTokensToBorrowDetails(tx);
