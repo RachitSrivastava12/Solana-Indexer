@@ -48,7 +48,7 @@ const DataPreview: React.FC<DataPreviewProps> = ({ dataTypes }) => {
     const fetchCustomQueries = async () => {
       try {
         const response = await axios.get<CustomQueriesResponse>(
-          'https://solana-indexer-3ttcyyfq6-rachit-srivastavas-projects-ee6e9b50.vercel.app/api/custom-queries'
+          'https://solana-indexer-7smpaunpj-rachit-srivastavas-projects-ee6e9b50.vercel.app/api/custom-queries'
         );
         if (response.data.success) {
           setCustomQueries(response.data.queries);
@@ -100,7 +100,7 @@ const DataPreview: React.FC<DataPreviewProps> = ({ dataTypes }) => {
       }
 
       const response = await axios.get<DataPreviewResponse>(
-        `https://solana-indexer-3ttcyyfq6-rachit-srivastavas-projects-ee6e9b50.vercel.app/api/data-preview/${tab.dataType}`
+        `https://solana-indexer-7smpaunpj-rachit-srivastavas-projects-ee6e9b50.vercel.app/api/data-preview/${tab.dataType}`
       );
 
       console.log(`Data fetched for ${activeTab}:`, response.data); // Debug log
