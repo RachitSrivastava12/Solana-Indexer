@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Database, List, Play } from 'lucide-react';
 import { useUserData } from '../contexts/UserDataContext';
 import { Github } from 'lucide-react';
+import { Twitter } from 'lucide-react';
 
 // Step components
 import WalletConnected from '../components/setup/WalletConnected';
@@ -263,7 +264,6 @@ const SetupWizard: React.FC = () => {
           </div>
         )}
       </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-4 md:mb-0 flex items-center space-x-3">
@@ -290,10 +290,20 @@ const SetupWizard: React.FC = () => {
           
           <div className="flex items-center space-x-6">
             <div className="hidden md:block text-sm text-gray-400">
-              Powered by Solana blockchain
+              Let's Connect ⮕
             </div>
             <a
-              href="#"
+              href="https://x.com/Rachit_twts"
+              className="group relative p-2 rounded-lg bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-gray-300 hover:text-white transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/25 transform hover:-translate-y-0.5"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Twitter className="h-5 w-5 group-hover:scale-110 transition-transform duration-200" />
+              <span className="sr-only">Twitter</span>
+              <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+            </a>
+            <a
+              href="https://github.com/RachitSrivastava12/Solana-Indexer"
               className="group relative p-2 rounded-lg bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-gray-300 hover:text-white transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/25 transform hover:-translate-y-0.5"
               target="_blank"
               rel="noopener noreferrer"
