@@ -48,7 +48,7 @@ const DataPreview: React.FC<DataPreviewProps> = ({ dataTypes }) => {
     const fetchCustomQueries = async () => {
       try {
         const response = await axios.get<CustomQueriesResponse>(
-          ' https://solana-indexer-i0kcm7qx7-rachit-srivastavas-projects-ee6e9b50.vercel.app/api/custom-queries'
+          ' http://localhost:5000/api/custom-queries'
         );
         if (response.data.success) {
           setCustomQueries(response.data.queries);
@@ -100,7 +100,7 @@ const DataPreview: React.FC<DataPreviewProps> = ({ dataTypes }) => {
       }
 
       const response = await axios.get<DataPreviewResponse>(
-        ` https://solana-indexer-i0kcm7qx7-rachit-srivastavas-projects-ee6e9b50.vercel.app/api/data-preview/${tab.dataType}`
+        ` http://localhost:5000/api/data-preview/${tab.dataType}`
       );
 
       console.log(`Data fetched for ${activeTab}:`, response.data); // Debug log
@@ -182,7 +182,7 @@ const DataPreview: React.FC<DataPreviewProps> = ({ dataTypes }) => {
                 onClick={() => setViewType('table')}
                 className={`px-2 py-1 text-sm ${
                   viewType === 'table'
-                    ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300'
+                    ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300'
                     : 'bg-gray-50 text-gray-600 dark:bg-gray-700 dark:text-gray-300'
                 }`}
               >
@@ -192,7 +192,7 @@ const DataPreview: React.FC<DataPreviewProps> = ({ dataTypes }) => {
                 onClick={() => setViewType('json')}
                 className={`px-2 py-1 text-sm ${
                   viewType === 'json'
-                    ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300'
+                    ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300'
                     : 'bg-gray-50 text-gray-600 dark:bg-gray-700 dark:text-gray-300'
                 }`}
               >
@@ -224,7 +224,7 @@ const DataPreview: React.FC<DataPreviewProps> = ({ dataTypes }) => {
               onClick={() => setActiveTab(tab.name)}
               className={`px-4 py-2 text-sm font-medium whitespace-nowrap ${
                 activeTab === tab.name
-                  ? 'border-b-2 border-yellow-600 text-yellow-600 dark:text-yellow-400 dark:border-yellow-400'
+                  ? 'border-b-2 border-purple-600 text-purple-600 dark:text-purple-400 dark:border-purple-400'
                   : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
               }`}
             >
@@ -236,7 +236,7 @@ const DataPreview: React.FC<DataPreviewProps> = ({ dataTypes }) => {
       <div className="overflow-x-auto max-h-80">
         {(isLoading && data.length === 0) ? (
           <div className="flex justify-center items-center p-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
           </div>
         ) : error && data.length === 0 ? (
           <div className="p-6 text-red-600 dark:text-red-400">{error}</div>

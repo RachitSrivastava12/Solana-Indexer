@@ -7,19 +7,19 @@
 }
 
 @layer utilities {
-  .text-neon-yellow {
+  .text-neon-purple {
     color: #ffff33;
   }
 
-  .border-neon-yellow {
+  .border-neon-purple {
     border-color: #ffff33;
   }
 
-  .shadow-neon-yellow-sm {
+  .shadow-neon-purple-sm {
     box-shadow: 0 0 4px #ffff33;
   }
 
-  .shadow-neon-yellow-md {
+  .shadow-neon-purple-md {
     box-shadow: 0 0 8px #ffff33;
   }
 
@@ -34,19 +34,19 @@
 
 @layer components {
   .neon-border {
-    @apply border border-neon-yellow shadow-neon-yellow-md;
+    @apply border border-neon-purple shadow-neon-purple-md;
   }
 
   .neon-text {
-    @apply text-neon-yellow drop-shadow-[0_0_3px_rgba(255,255,51,0.5)];
+    @apply text-neon-purple drop-shadow-[0_0_3px_rgba(255,255,51,0.5)];
   }
 
   .neon-button {
-    @apply bg-transparent border border-neon-yellow text-neon-yellow shadow-neon-yellow-sm hover:shadow-neon-yellow-md transition-shadow duration-300;
+    @apply bg-transparent border border-neon-purple text-neon-purple shadow-neon-purple-sm hover:shadow-neon-purple-md transition-shadow duration-300;
   }
 
   .neon-card {
-    @apply bg-black border border-dark-800 shadow-lg hover:border-neon-yellow hover:shadow-neon-yellow-sm transition-all duration-300;
+    @apply bg-black border border-dark-800 shadow-lg hover:border-neon-purple hover:shadow-neon-purple-sm transition-all duration-300;
   }
 }
 

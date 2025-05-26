@@ -52,7 +52,7 @@ const DatabaseSetup: React.FC<DatabaseSetupProps> = ({ onComplete }) => {
           };
       
       // Send the request to the backend
-      const response = await fetch(' https://solana-indexer-i0kcm7qx7-rachit-srivastavas-projects-ee6e9b50.vercel.app/api/configure-database', {
+      const response = await fetch(' http://localhost:5000/api/configure-database', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -92,8 +92,8 @@ const DatabaseSetup: React.FC<DatabaseSetupProps> = ({ onComplete }) => {
   return (
     <div className="w-full max-w-3xl mx-auto">
       <div className="flex items-center space-x-4 mb-6">
-        <div className="p-3 bg-yellow-100 dark:bg-yellow-900 rounded-full">
-          <Database className="w-6 h-6 text-yellow-600 dark:text-yellow-400" />
+        <div className="p-3 bg-purple-100 dark:bg-purple-900 rounded-full">
+          <Database className="w-6 h-6 text-purple-600 dark:text-purple-400" />
         </div>
         <div>
           <h3 className="text-lg font-medium text-gray-900 dark:text-white">
@@ -112,7 +112,7 @@ const DatabaseSetup: React.FC<DatabaseSetupProps> = ({ onComplete }) => {
             onClick={() => setConnectionType('url')}
             className={`flex-1 py-2 px-4 text-center border-b-2 ${
               connectionType === 'url'
-                ? 'border-yellow-600 text-yellow-600 dark:text-yellow-400 dark:border-yellow-400'
+                ? 'border-purple-600 text-purple-600 dark:text-purple-400 dark:border-purple-400'
                 : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400'
             }`}
           >
@@ -123,7 +123,7 @@ const DatabaseSetup: React.FC<DatabaseSetupProps> = ({ onComplete }) => {
             onClick={() => setConnectionType('credentials')}
             className={`flex-1 py-2 px-4 text-center border-b-2 ${
               connectionType === 'credentials'
-                ? 'border-yellow-600 text-yellow-600 dark:text-yellow-400 dark:border-yellow-400'
+                ? 'border-purple-600 text-purple-600 dark:text-purple-400 dark:border-purple-400'
                 : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400'
             }`}
           >
@@ -143,7 +143,7 @@ const DatabaseSetup: React.FC<DatabaseSetupProps> = ({ onComplete }) => {
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 placeholder="postgresql://username:password@localhost:5432/database"
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 dark:bg-gray-700 dark:text-white"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-white"
                 required
               />
               <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
@@ -163,7 +163,7 @@ const DatabaseSetup: React.FC<DatabaseSetupProps> = ({ onComplete }) => {
                     value={host}
                     onChange={(e) => setHost(e.target.value)}
                     placeholder="localhost"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 dark:bg-gray-700 dark:text-white"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-white"
                     required
                   />
                 </div>
@@ -177,7 +177,7 @@ const DatabaseSetup: React.FC<DatabaseSetupProps> = ({ onComplete }) => {
                     value={port}
                     onChange={(e) => setPort(e.target.value)}
                     placeholder="5432"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 dark:bg-gray-700 dark:text-white"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-white"
                     required
                   />
                 </div>
@@ -192,7 +192,7 @@ const DatabaseSetup: React.FC<DatabaseSetupProps> = ({ onComplete }) => {
                   value={database}
                   onChange={(e) => setDatabase(e.target.value)}
                   placeholder="postgres"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-white"
                   required
                 />
               </div>
@@ -207,7 +207,7 @@ const DatabaseSetup: React.FC<DatabaseSetupProps> = ({ onComplete }) => {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder="postgres"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 dark:bg-gray-700 dark:text-white"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-white"
                     required
                   />
                 </div>
@@ -221,7 +221,7 @@ const DatabaseSetup: React.FC<DatabaseSetupProps> = ({ onComplete }) => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 dark:bg-gray-700 dark:text-white"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-white"
                     required
                   />
                 </div>
@@ -233,7 +233,7 @@ const DatabaseSetup: React.FC<DatabaseSetupProps> = ({ onComplete }) => {
             <button
               type="submit"
               disabled={testing}
-              className="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+              className="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
             >
               {testing ? (
                 <>

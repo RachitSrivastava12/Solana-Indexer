@@ -43,7 +43,7 @@ const DataTypeStats: React.FC<DataTypeStatsProps> = ({ dataTypes }) => {
       setError(null);
       try {
         const response = await axios.get<DataTypeStatsResponse>(
-          ' https://solana-indexer-i0kcm7qx7-rachit-srivastavas-projects-ee6e9b50.vercel.app/api/data-type-stats'
+          ' http://localhost:5000/api/data-type-stats'
         );
 
         if (response.data.success) {
@@ -91,7 +91,7 @@ const DataTypeStats: React.FC<DataTypeStatsProps> = ({ dataTypes }) => {
           <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
             Data Type Statistics
           </h2>
-          <button className="text-sm text-yellow-600 dark:text-yellow-400 hover:text-yellow-700 dark:hover:text-yellow-300 transition-colors duration-200">
+          <button className="text-sm text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors duration-200">
             View All
           </button>
         </div>
@@ -99,7 +99,7 @@ const DataTypeStats: React.FC<DataTypeStatsProps> = ({ dataTypes }) => {
       <div className="overflow-x-auto">
         {isLoading ? (
           <div className="flex justify-center items-center p-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
           </div>
         ) : error ? (
           <div className="p-6 text-red-600 dark:text-red-400">{error}</div>
@@ -133,7 +133,7 @@ const DataTypeStats: React.FC<DataTypeStatsProps> = ({ dataTypes }) => {
                 >
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className="flex-shrink-0 h-8 w-8 flex items-center justify-center bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 rounded-md">
+                      <div className="flex-shrink-0 h-8 w-8 flex items-center justify-center bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-md">
                         {iconMap[stat.name] || <BarChart3 className="w-5 h-5" />}
                       </div>
                       <div className="ml-3">

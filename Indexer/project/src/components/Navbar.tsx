@@ -33,8 +33,8 @@ const Navbar: React.FC = () => {
                   to="/dashboard" 
                   className={`px-3 py-2 rounded-md text-sm font-medium ${
                     location.pathname === '/dashboard' 
-                      ? 'text-neon-yellow' 
-                      : 'text-gray-300 hover:text-neon-yellow'
+                      ? 'text-neon-purple' 
+                      : 'text-gray-300 hover:text-neon-purple'
                   } transition-colors duration-200`}
                 >
                   Dashboard
@@ -60,7 +60,7 @@ const Navbar: React.FC = () => {
           <div className="flex items-center md:hidden">
             <button
               onClick={toggleMenu}
-              className="p-2 rounded-md text-gray-300 hover:text-neon-yellow transition-colors duration-200"
+              className="p-2 rounded-md text-gray-300 hover:text-neon-purple transition-colors duration-200"
               aria-expanded={isOpen}
               aria-label="Main menu"
             >
@@ -80,7 +80,7 @@ const Navbar: React.FC = () => {
                   to="/dashboard"
                   className={`block px-3 py-2 rounded-md text-base font-medium ${
                     location.pathname === '/dashboard'
-                      ? 'text-neon-yellow'
+                      ? 'text-neon-purple'
                       : 'text-gray-300'
                   } transition-colors duration-200`}
                   onClick={toggleMenu}

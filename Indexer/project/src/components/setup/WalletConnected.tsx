@@ -25,7 +25,7 @@ const WalletConnected: React.FC = () => {
             href={`https://explorer.solana.com/address/${publicKey}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="ml-2 text-yellow-600 dark:text-yellow-400 hover:text-yellow-700 dark:hover:text-yellow-300"
+            className="ml-2 text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300"
           >
             <ExternalLink className="w-4 h-4" />
           </a>

@@ -62,8 +62,8 @@ const SetupComplete: React.FC<SetupCompleteProps> = ({ onComplete }) => {
         </h4>
         <div className="space-y-4">
           <div className="flex items-start">
-            <div className="p-2 bg-yellow-100 dark:bg-yellow-900 rounded-md mr-3">
-              <Database className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+            <div className="p-2 bg-purple-100 dark:bg-purple-900 rounded-md mr-3">
+              <Database className="w-5 h-5 text-purple-600 dark:text-purple-400" />
             </div>
             <div>
               <h5 className="font-medium text-gray-800 dark:text-gray-200">
@@ -77,8 +77,8 @@ const SetupComplete: React.FC<SetupCompleteProps> = ({ onComplete }) => {
             </div>
           </div>
           <div className="flex items-start">
-            <div className="p-2 bg-yellow-100 dark:bg-yellow-900 rounded-md mr-3">
-              <List className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+            <div className="p-2 bg-purple-100 dark:bg-purple-900 rounded-md mr-3">
+              <List className="w-5 h-5 text-purple-600 dark:text-purple-400" />
             </div>
             <div>
               <h5 className="font-medium text-gray-800 dark:text-gray-200">
@@ -92,22 +92,22 @@ const SetupComplete: React.FC<SetupCompleteProps> = ({ onComplete }) => {
               </p>
               <div className="mt-2 flex flex-wrap gap-2">
                 {userData.dataTypes.nftBids && (
-                  <span className="px-2 py-1 text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-300 rounded-full">
+                  <span className="px-2 py-1 text-xs bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-300 rounded-full">
                     NFT Bids
                   </span>
                 )}
                 {userData.dataTypes.nftPrices && (
-                  <span className="px-2 py-1 text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-300 rounded-full">
+                  <span className="px-2 py-1 text-xs bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-300 rounded-full">
                     NFT Prices
                   </span>
                 )}
                 {userData.dataTypes.tokensToBorrow && (
-                  <span className="px-2 py-1 text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-300 rounded-full">
+                  <span className="px-2 py-1 text-xs bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-300 rounded-full">
                     Tokens to Borrow
                   </span>
                 )}
                 {userData.dataTypes.tokenPrices && (
-                  <span className="px-2 py-1 text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-300 rounded-full">
+                  <span className="px-2 py-1 text-xs bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-300 rounded-full">
                     Token Prices
                   </span>
                 )}
@@ -138,7 +138,7 @@ const SetupComplete: React.FC<SetupCompleteProps> = ({ onComplete }) => {
       <button
         onClick={handleStartIndexing}
         disabled={isLoading}
-        className={`w-full inline-flex justify-center items-center px-4 py-3 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-yellow-600 to-yellow-800 hover:from-yellow-700 hover:to-yellow-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-colors duration-200 ${
+        className={`w-full inline-flex justify-center items-center px-4 py-3 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200 ${
           isLoading ? 'opacity-50 cursor-not-allowed' : ''
         }`}
       >

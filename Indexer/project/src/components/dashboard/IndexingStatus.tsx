@@ -41,7 +41,7 @@ const IndexingStatus: React.FC<IndexingStatusProps> = () => {
       setError(null);
       try {
         const response = await axios.get<IndexingStatusResponse>(
-          ' https://solana-indexer-i0kcm7qx7-rachit-srivastavas-projects-ee6e9b50.vercel.app/api/indexing-status'
+          ' http://localhost:5000/api/indexing-status'
         );
 
         if (response.data.success !== false) {
@@ -74,7 +74,7 @@ const IndexingStatus: React.FC<IndexingStatusProps> = () => {
     return (
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 transition-all duration-300">
         <div className="flex justify-center items-center p-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
         </div>
       </div>
     );
@@ -116,7 +116,7 @@ const IndexingStatus: React.FC<IndexingStatusProps> = () => {
             trend={status.active ? '+2.4%' : '0%'}
             trendUp={status.active}
             icon={<PieChart className="w-6 h-6" />}
-            color="yellow"
+            color="purple"
           />
           <StatusCard
             title="Run Time"
@@ -149,7 +149,7 @@ interface StatusCardProps {
   trend?: string;
   trendUp?: boolean;
   icon: React.ReactNode;
-  color: 'yellow' | 'blue' | 'indigo' | 'green';
+  color: 'purple' | 'blue' | 'indigo' | 'green';
 }
 
 const StatusCard: React.FC<StatusCardProps> = ({
@@ -162,7 +162,7 @@ const StatusCard: React.FC<StatusCardProps> = ({
   color,
 }) => {
   const colorClasses = {
-    yellow: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400',
+    purple: 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400',
     blue: 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400',
     indigo: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400',
     green: 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400',
