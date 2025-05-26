@@ -101,7 +101,7 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
       const payload = isStarting ? { dataTypes: userData.dataTypes } : {};
 
       const response = await axios.post(
-        ` https://solana-indexer-h8fy0qclk-rachit-srivastavas-projects-ee6e9b50.vercel.app${endpoint}`,
+        ` https://solana-indexer-f33eplon1-rachit-srivastavas-projects-ee6e9b50.vercel.app${endpoint}`,
         payload
       );
 
@@ -130,7 +130,7 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
 
   const initializeConnections = async (rpcUrl: string) => {
     try {
-      const solanaResponse = await axios.post(' https://solana-indexer-h8fy0qclk-rachit-srivastavas-projects-ee6e9b50.vercel.app/api/initialize', {
+      const solanaResponse = await axios.post(' https://solana-indexer-f33eplon1-rachit-srivastavas-projects-ee6e9b50.vercel.app/api/initialize', {
         rpcUrl,
       });
       console.log('Solana initialize response:', solanaResponse.data);
@@ -156,7 +156,7 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
       };
 
       const dbResponse = await axios.post(
-        ' https://solana-indexer-h8fy0qclk-rachit-srivastavas-projects-ee6e9b50.vercel.app/api/configure-database',
+        ' https://solana-indexer-f33eplon1-rachit-srivastavas-projects-ee6e9b50.vercel.app/api/configure-database',
         dbPayload
       );
       console.log('Database configure response:', dbResponse.data);
