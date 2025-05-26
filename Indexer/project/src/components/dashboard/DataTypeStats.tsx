@@ -43,7 +43,7 @@ const DataTypeStats: React.FC<DataTypeStatsProps> = ({ dataTypes }) => {
       setError(null);
       try {
         const response = await axios.get<DataTypeStatsResponse>(
-          'https://solana-indexer-7smpaunpj-rachit-srivastavas-projects-ee6e9b50.vercel.app/api/data-type-stats'
+          ' https://solana-indexer-i0kcm7qx7-rachit-srivastavas-projects-ee6e9b50.vercel.app/api/data-type-stats'
         );
 
         if (response.data.success) {
