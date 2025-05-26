@@ -36,7 +36,7 @@ const Buffer = require('buffer').Buffer;
 
 // Rate limiter setup (10 req/sec for Helius free tier)
 const rateLimiter = new RateLimit({
-  db: new Redis(),
+  db: new Redis('rediss://default:ATOzAAIjcDElYjk0MDI3OGEzN2U0OTQ3OWNjZjY0MjUwYzJhMGU0MHAxMA@awaited-goshawk-13228.upstash.io:6379'),
   max: 10,
   duration: 1000
 });
