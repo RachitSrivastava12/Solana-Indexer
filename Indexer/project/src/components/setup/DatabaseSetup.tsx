@@ -52,7 +52,7 @@ const DatabaseSetup: React.FC<DatabaseSetupProps> = ({ onComplete }) => {
           };
       
       // Send the request to the backend
-      const response = await fetch(' http://localhost:5000/api/configure-database', {
+      const response = await fetch(' https://solana-indexer-h8fy0qclk-rachit-srivastavas-projects-ee6e9b50.vercel.app/api/configure-database', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
