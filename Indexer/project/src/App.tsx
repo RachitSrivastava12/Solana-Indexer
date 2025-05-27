@@ -25,7 +25,7 @@ function App() {
                 <Route path="*" element={<NotFound />} />
               </Route>
             </Routes>
-            <Analytics />
+            {process.env.NODE_ENV === 'production' && <Analytics />}
           </Router>
         </UserDataProvider>
       </PhantomWalletProvider>
