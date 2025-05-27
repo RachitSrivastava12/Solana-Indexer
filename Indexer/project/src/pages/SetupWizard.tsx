@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight, Database, List, Play } from 'lucide-react';
 import { useUserData } from '../contexts/UserDataContext';
 import { Github } from 'lucide-react';
 import { Twitter } from 'lucide-react';
+import { Analytics } from '@vercel/analytics/react';
 
 // Step components
 import WalletConnected from '../components/setup/WalletConnected';
@@ -322,6 +323,7 @@ const SetupWizard: React.FC = () => {
           </div>
         </div>
       </div>
+      <Analytics />
     </div>
   );
 };

@@ -5,6 +5,7 @@ import { useUserData } from '../contexts/UserDataContext';
 import { Database, Shield, BarChart3, Zap, ArrowRight, ExternalLink } from 'lucide-react';
 import { Github } from 'lucide-react';
 import { Twitter } from 'lucide-react';
+import { Analytics } from '@vercel/analytics/react';
 
 // Solana Logo Component
 const SolanaLogo: React.FC<{ className?: string }> = ({ className = "h-12 w-12" }) => (
@@ -242,6 +243,7 @@ const Home: React.FC = () => {
           </div>
         </div>
       </div>
+      <Analytics />
     </div>
   );
 };

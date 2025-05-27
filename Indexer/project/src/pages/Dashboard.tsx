@@ -5,6 +5,7 @@ import { useUserData } from '../contexts/UserDataContext';
 import { usePhantomWallet } from '../contexts/PhantomWalletContext';
 import { Github } from 'lucide-react';
 import { Twitter } from 'lucide-react';
+import { Analytics } from '@vercel/analytics/react';
 
 // Import dashboard components
 import IndexingStatus from '../components/dashboard/IndexingStatus';
@@ -240,6 +241,7 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
       </div>
+         <Analytics />
     </div>
   );
 };
