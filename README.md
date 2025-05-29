@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://cryptologos.cc/logos/solana-sol-logo.png?v=024" alt="Solana Logo" width="120"/>
+  <img src="https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png" alt="Solana Logo" width="120"/>
 </p>
 
 # 🧠 Solana NFT & DeFi Indexer
