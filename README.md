@@ -60,7 +60,7 @@ Found a broken endpoint or want to help refactor the backend? Open an issue or d
 
 ## 🐦 Tweet Thread
 
-Check out the tweet that launched this 👉 [View Tweet](https://twitter.com/solana/status/...)  
+Check out the tweet that launched this 👉 [View Tweet](https://x.com/Rachit_twts/status/1927204403720622425)  
 _(Replace with actual tweet link)_
 
 ---
