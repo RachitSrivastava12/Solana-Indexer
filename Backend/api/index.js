@@ -24,7 +24,7 @@ const pool = new pg.Pool({
 
 // Initialize Solana connection
 let solanaConnection = null;
-let network = 'mainnet'; // Default to mainnet, will be updated based on RPC URL
+let network = 'mainnet'; // Default to mainnet
 
 // Helius RPC URLs
 const RPC_URL = 'https://mainnet.helius-rpc.com/?api-key=010cd958-a025-4a1a-aa7e-cc27d509f643';
@@ -52,7 +52,6 @@ async function withRetry(fn, maxRetries = 3, delayMs = 2000) {
       const isRetryable = error.message.includes('rate limit') || error.message.includes('429') || (error.cause && error.cause.code === 'ETIMEDOUT');
       if (attempt === maxRetries || !isRetryable) {
         console.error(`Retry failed after ${maxRetries} attempts:`, error.message);
-        if (error.message.includes('429')) console.error('Helius RPC rate limit exceeded (429 error).');
         throw error;
       }
       console.warn(`Retry ${attempt}/${maxRetries} after error: ${error.message}`);
@@ -263,7 +262,7 @@ app.post('/api/start-indexing', async (req, res) => {
     const statusResult = await client.query('SELECT is_active, records_processed FROM indexing_status WHERE id = 1');
     const isActive = statusResult.rows[0]?.is_active;
 
-    if (isActive && indexers.nftBids && dataTypes.nftBids && dataTypes.nftPrices && dataTypes.tokensToBorrow && dataTypes.tokenPrices) {
+    if (isActive && dataTypes.nftBids && dataTypes.nftPrices && dataTypes.tokensToBorrow && dataTypes.tokenPrices) {
       client.release();
       return res.json({ success: true, message: 'Indexing already active with requested data types' });
     }
@@ -614,14 +613,14 @@ async function extractNftBidDetails(tx) {
     if (!instruction || !instruction.accounts || instruction.accounts.length < 3) return null;
 
     const dataBuffer = Buffer.from(instruction.data, 'base64');
-    if (dataBuffer.length < 9 || dataBuffer[0] !== 0xe8) return null; // Bid instruction
+    if (dataBuffer.length < 9 || ![0xe8, 0x03].includes(dataBuffer[0])) return null; // Bid or placeBid instruction
 
     const bidder = tx.transaction.message.accountKeys.find(key => key.signer)?.pubkey.toBase58() || instruction.accounts[0].toBase58();
-    const nftAddress = instruction.accounts[2].toBase58(); // Typically the NFT mint address
+    const nftAddress = instruction.accounts[2].toBase58(); // Auction house or NFT mint
     const lamports = dataBuffer.readBigUInt64LE(1);
     const amount = Number(lamports) / 1e9;
 
-    if (amount > 1000) return null; // Reject unrealistic amounts
+    if (amount > 1000 || amount <= 0) return null; // Reject unrealistic amounts
 
     return {
       nft_address: nftAddress,
@@ -644,7 +643,7 @@ async function extractNftSaleDetails(tx) {
     if (!instruction || !instruction.accounts || instruction.accounts.length < 4) return null;
 
     const dataBuffer = Buffer.from(instruction.data, 'base64');
-    if (dataBuffer.length < 9 || dataBuffer[0] !== 0x50) return null; // Buy instruction
+    if (dataBuffer.length < 9 || ![0x50, 0x04].includes(dataBuffer[0])) return null; // Buy or executeSale instruction
 
     const buyer = tx.transaction.message.accountKeys.find(key => key.signer)?.pubkey.toBase58();
     const seller = instruction.accounts[1].toBase58(); // Seller account
@@ -652,7 +651,7 @@ async function extractNftSaleDetails(tx) {
     const lamports = dataBuffer.readBigUInt64LE(1);
     const amount = Number(lamports) / 1e9;
 
-    if (amount > 1000) return null;
+    if (amount > 1000 || amount <= 0) return null;
 
     return {
       nft_address: nftAddress,
@@ -692,6 +691,8 @@ async function extractTokensToBorrowDetails(tx) {
 
     const availableAmount = Number(reserveData.data.readBigUInt64LE(128)) / 1e9;
     const borrowRate = Number(reserveData.data.readBigUInt64LE(216)) / 1e9 * 100;
+
+    if (availableAmount <= 0 || borrowRate < 0) return null;
 
     return [{
       token,
@@ -756,12 +757,26 @@ async function startIndexer(dataTypes) {
     indexers.nftBids = setInterval(async () => {
       let client;
       try {
-        if (!solanaConnection) return;
+        if (!solanaConnection) {
+          console.error('Solana connection not available');
+          return;
+        }
 
         client = await pool.connect();
         let recordsProcessed = 0;
 
+        // Reset lastSignatures if no progress after a cycle
+        if (lastSignatures.nftBids && recordsProcessed === 0) {
+          console.log('No progress, resetting lastSignatures.nftBids');
+          lastSignatures.nftBids = null;
+        }
+        if (lastSignatures.tokensToBorrow && recordsProcessed === 0) {
+          console.log('No progress, resetting lastSignatures.tokensToBorrow');
+          lastSignatures.tokensToBorrow = null;
+        }
+
         if (dataTypes.nftBids || dataTypes.nftPrices) {
+          console.log('Fetching signatures for Magic Eden...');
           const signatures = await withRetry(() =>
             solanaConnection.getSignaturesForAddress(programIds.nftBids, {
               limit: 25,
@@ -772,14 +787,20 @@ async function startIndexer(dataTypes) {
             return [];
           });
 
+          console.log(`Fetched ${signatures.length} signatures for Magic Eden`);
           if (signatures.length === 0) {
-            console.log('No new signatures found for Magic Eden');
+            console.log('No new signatures found for Magic Eden, resetting last signature');
+            lastSignatures.nftBids = null;
             return;
           }
 
           for (const sig of signatures) {
-            if (processedSignatures.has(sig.signature)) continue;
+            if (processedSignatures.has(sig.signature)) {
+              console.log(`Skipping already processed signature: ${sig.signature}`);
+              continue;
+            }
 
+            console.log(`Processing transaction: ${sig.signature}`);
             const tx = await withRetry(() =>
               solanaConnection.getParsedTransaction(sig.signature, {
                 maxSupportedTransactionVersion: 0,
@@ -790,7 +811,11 @@ async function startIndexer(dataTypes) {
               return null;
             });
 
-            if (!tx || !tx.meta || tx.meta.err) continue;
+            if (!tx || !tx.meta || tx.meta.err) {
+              console.log(`Invalid transaction or error: ${sig.signature}`);
+              processedSignatures.add(sig.signature);
+              continue;
+            }
 
             if (dataTypes.nftBids) {
               const bidDetails = await extractNftBidDetails(tx);
@@ -802,6 +827,8 @@ async function startIndexer(dataTypes) {
                 `, [bidDetails.nft_address, bidDetails.bidder, bidDetails.amount, bidDetails.signature]);
                 console.log(`Processed NFT bid: ${bidDetails.signature}`);
                 recordsProcessed++;
+              } else {
+                console.log(`No bid details extracted for: ${sig.signature}`);
               }
             }
 
@@ -815,6 +842,8 @@ async function startIndexer(dataTypes) {
                 `, [saleDetails.nft_address, saleDetails.seller, saleDetails.buyer, saleDetails.amount, saleDetails.signature]);
                 console.log(`Processed NFT sale: ${saleDetails.signature}`);
                 recordsProcessed++;
+              } else {
+                console.log(`No sale details extracted for: ${sig.signature}`);
               }
             }
 
@@ -826,6 +855,7 @@ async function startIndexer(dataTypes) {
         }
 
         if (dataTypes.tokensToBorrow) {
+          console.log('Fetching signatures for Solend...');
           const signatures = await withRetry(() =>
             solanaConnection.getSignaturesForAddress(programIds.tokensToBorrow, {
               limit: 25,
@@ -836,9 +866,20 @@ async function startIndexer(dataTypes) {
             return [];
           });
 
-          for (const sig of signatures) {
-            if (processedSignatures.has(sig.signature)) continue;
+          console.log(`Fetched ${signatures.length} signatures for Solend`);
+          if (signatures.length === 0) {
+            console.log('No new signatures found for Solend, resetting last signature');
+            lastSignatures.tokensToBorrow = null;
+            return;
+          }
 
+          for (const sig of signatures) {
+            if (processedSignatures.has(sig.signature)) {
+              console.log(`Skipping already processed signature: ${sig.signature}`);
+              continue;
+            }
+
+            console.log(`Processing transaction: ${sig.signature}`);
             const tx = await withRetry(() =>
               solanaConnection.getParsedTransaction(sig.signature, {
                 maxSupportedTransactionVersion: 0,
@@ -849,7 +890,11 @@ async function startIndexer(dataTypes) {
               return null;
             });
 
-            if (!tx || !tx.meta || tx.meta.err) continue;
+            if (!tx || !tx.meta || tx.meta.err) {
+              console.log(`Invalid transaction or error: ${sig.signature}`);
+              processedSignatures.add(sig.signature);
+              continue;
+            }
 
             const tokensToBorrowDetails = await extractTokensToBorrowDetails(tx);
             if (tokensToBorrowDetails) {
@@ -866,6 +911,8 @@ async function startIndexer(dataTypes) {
                 console.log(`Processed token to borrow: ${detail.token}`);
                 recordsProcessed++;
               }
+            } else {
+              console.log(`No tokens to borrow details extracted for: ${sig.signature}`);
             }
             processedSignatures.add(sig.signature);
           }
@@ -892,6 +939,8 @@ async function startIndexer(dataTypes) {
               last_block_height = $3
             WHERE id = 1
           `, [recordsProcessed, recordsPerSecond, blockHeight || 0]);
+        } else {
+          console.log('No records processed in this cycle');
         }
 
         client.release();
@@ -899,7 +948,7 @@ async function startIndexer(dataTypes) {
         console.error('Mainnet polling error:', error.message);
         if (client) client.release();
       }
-    }, 30000);
+    }, 60000); // Increased to 60s to respect rate limits
 
     if (dataTypes.tokenPrices) {
       indexers.tokenPrices = setInterval(async () => {
