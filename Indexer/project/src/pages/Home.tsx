@@ -60,6 +60,7 @@ const Home: React.FC = () => {
   }, [connected, wallet, navigate, setWalletAddress, userData.setupComplete]);
 
   return (
+    <div> this is a solana indexer</div>
     <div className="min-h-[calc(100vh-7rem)] bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]" />
