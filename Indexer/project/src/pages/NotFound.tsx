@@ -9,6 +9,7 @@ const NotFound: React.FC = () => {
       <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Page Not Found</h2>
       <p className="text-gray-600 dark:text-gray-400 mb-8 text-center max-w-md">
         The page you're looking for doesn't exist or has been moved.
+        It does not exist.
       </p>
       <Link
         to="/"
