@@ -263,6 +263,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, icon, gra
       <div className="relative p-8 rounded-xl bg-slate-800/50 border border-slate-700/50 backdrop-blur-sm hover:bg-slate-800/70 transition-all duration-300 h-full">
         <div className="flex flex-col items-center text-center space-y-4">
           <div className="p-3 rounded-lg bg-slate-700/50">
+            <div>hellop</div>
             {icon}
           </div>
           <h3 className="text-xl font-semibold text-white">{title}</h3>
